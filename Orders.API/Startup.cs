@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Orders.BLL;
+using Orders.BLL.Broker;
 
 namespace Orders.API
 {
@@ -21,6 +22,7 @@ namespace Orders.API
         {
 
             services.AddBLL(Configuration);
+            services.AddRabbit(Configuration);
 
             services.AddControllers().AddNewtonsoftJson(options =>
                  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

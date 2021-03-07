@@ -30,8 +30,8 @@ namespace Orders.BLL
         }
 
         public async Task<bool> SaveChanges()
-        {
-            return await context.SaveChangesAsync() == 1 ? true : false;
+        {  
+            return await context.SaveChangesAsync() == 0 ? false : true;
         }
     }
 }
