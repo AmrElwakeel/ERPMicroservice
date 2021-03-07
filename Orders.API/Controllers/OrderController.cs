@@ -24,7 +24,9 @@ namespace Orders.API.Controllers
         }
         [HttpGet]
         public async Task<IActionResult> Get()
-        { 
+        {
+            //string msg=  RabbitManager.Consumer("amq.topic", "topic", "erpmicroservice.exchange.topic.orderingService");
+
             return Ok(await UOW.GetOrderRepository.GetAll());
         }
 
@@ -52,7 +54,6 @@ namespace Orders.API.Controllers
             }), "amq.topic", "topic", "erpmicroservice.exchange.topic.orderingService");
 
 
-            //string msg=  RabbitManager.Consumer("amq.topic", "topic", "erpmicroservice.exchange.topic.orderingService");
 
             return Ok(order);
         }
