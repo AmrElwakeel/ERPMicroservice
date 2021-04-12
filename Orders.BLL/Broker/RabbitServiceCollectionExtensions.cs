@@ -19,7 +19,10 @@ namespace Orders.BLL.Broker
             services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
             services.AddSingleton<IPooledObjectPolicy<IModel>, RabbitModelPooledObjectPolicy>();
 
-            services.AddSingleton<IRabbitManager, RabbitManager>();
+            services.AddSingleton<IPublisherRabbitManager, PublisherRabbitManager>();
+
+            
+            
 
             return services;
         }

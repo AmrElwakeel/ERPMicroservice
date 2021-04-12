@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Products.Application.Interfaces.IRepositories;
 using Products.Application.Interfaces.IUnitOfWork;
+using Products.Persistence.Entites.Broker;
+using Products.Persistence.Entites.Repositories;
 using Products.Persistence.Entites.UOW;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Persistence.Entites
 {
@@ -21,6 +21,18 @@ namespace Persistence.Entites
             //services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            //services.AddScoped<IProductRepository, ProductRepository>();
+
+
+            var rabbitConfig = configuration.GetSection("rabbit");
+            services.Configure<RabbitOptions>(rabbitConfig);
+
+            services.AddHostedService<ConsumerRabbitManager>();
+
+
+
+            
         }
     }
 }

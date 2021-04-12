@@ -8,11 +8,11 @@ using System.Text;
 
 namespace Orders.BLL.Broker
 {
-    public class RabbitManager : IRabbitManager
+    public class PublisherRabbitManager : IPublisherRabbitManager
     {
         private readonly DefaultObjectPool<IModel> _objectPool;
 
-        public RabbitManager(IPooledObjectPolicy<IModel> objectPolicy)
+        public PublisherRabbitManager(IPooledObjectPolicy<IModel> objectPolicy)
         {
             _objectPool = new DefaultObjectPool<IModel>(objectPolicy, Environment.ProcessorCount * 2);
         }
@@ -44,24 +44,6 @@ namespace Orders.BLL.Broker
             {
                 _objectPool.Return(channel);
             }
-        }
-
-        public string Consumer(string exchangeName, string exchangeType, string routeKey)
-        {
-            var channel = _objectPool.Get();
-
-            channel.ExchangeDeclare(exchangeName, exchangeType, true, false, null);
-
-            var Consumer = new EventingBasicConsumer(channel);
-
-            string Msg="";
-            Consumer.Received += (sender, e) =>
-            {
-                var body = e.Body.ToArray();
-                Msg = Encoding.UTF8.GetString(body); 
-            };
-
-            return Msg;
         }
     }
 }

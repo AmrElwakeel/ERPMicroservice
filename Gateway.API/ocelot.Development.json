@@ -10,7 +10,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Product",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get","Post" ]
     },
     {
       "DownstreamPathTemplate": "/api/Order",
@@ -22,7 +22,7 @@
         }
       ],
       "UpstreamPathTemplate": "/api/Order",
-      "UpstreamHttpMethod": [ "Get" ]
+      "UpstreamHttpMethod": [ "Get","Post" ]
     }
   ],
   "GlobalConfiguration": {

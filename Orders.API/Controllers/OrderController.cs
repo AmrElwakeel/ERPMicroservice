@@ -15,18 +15,16 @@ namespace Orders.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IUnitOfWork UOW;
-        public IRabbitManager RabbitManager;
+        public IPublisherRabbitManager RabbitManager;
 
-        public OrderController(IUnitOfWork UOW, IRabbitManager rabbitManager)
+        public OrderController(IUnitOfWork UOW, IPublisherRabbitManager rabbitManager)
         {
             this.UOW = UOW;
             RabbitManager = rabbitManager;
         }
         [HttpGet]
         public async Task<IActionResult> Get()
-        {
-            //string msg=  RabbitManager.Consumer("amq.topic", "topic", "erpmicroservice.exchange.topic.orderingService");
-
+        { 
             return Ok(await UOW.GetOrderRepository.GetAll());
         }
 
@@ -50,8 +48,8 @@ namespace Orders.API.Controllers
             // publish message  
             RabbitManager.Publish(order.OrderDetials.Select(a=>new 
             {
-                a.ProductId ,a.Amount
-            }), "amq.topic", "topic", "erpmicroservice.exchange.topic.orderingService");
+                a.ProductId ,a.Amount,AddedOrder=true
+            }), "amq.topic", "topic", "ERPOrderingQueue");
 
 
 

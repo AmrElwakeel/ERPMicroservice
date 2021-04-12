@@ -54,9 +54,13 @@ namespace Products.Persistence.Entites.UOW
             }
         }
 
-        public async Task<bool> SaveChanges()
+        public async Task<bool> SaveChangesAsync()
         {
             return await context.SaveChangesAsync() == 1 ? true : false;
+        }
+        public bool SaveChanges()
+        {
+            return context.SaveChanges() == 1 ? true : false;
         }
     }
 }

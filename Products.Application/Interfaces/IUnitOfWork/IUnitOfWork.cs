@@ -11,6 +11,7 @@ namespace Products.Application.Interfaces.IUnitOfWork
         public IProductRepository GetProductRepository { get; }
         public IDepartmentRepository GetDepartmentRepository { get; }
         public ICategoryRepository GetCategoryRepository { get; }
-        Task<bool> SaveChanges();
+        Task<bool> SaveChangesAsync();
+        bool SaveChanges();
     }
 }

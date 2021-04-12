@@ -12,6 +12,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Persistence.Entites;
+using Plain.RabbitMQ;
+using RabbitMQ.Client;
+using Products.API.Subscriber;
+using Subscriberr = Plain.RabbitMQ.Subscriber;
 namespace Products.API
 {
     public class Startup
@@ -26,6 +30,14 @@ namespace Products.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddPersistenceEntites(Configuration);
+
+            services.AddSingleton<IConnectionProvider>(new ConnectionProvider("amqp://guest:guest@localhost:5672"));
+
+            services.AddScoped<ISubscriber>(x => new Subscriberr(x.GetService<IConnectionProvider>()
+                , "amq.topic", "topic", "erpmicroservice.exchange.topic.orderingService", ExchangeType.Topic));
+
+            //services.AddHostedService<ProductDataCollector>();
+
 
             services.AddControllers().AddNewtonsoftJson(options =>
                  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

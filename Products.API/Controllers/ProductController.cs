@@ -43,7 +43,7 @@ namespace Products.API.Controllers
         public async Task<IActionResult> Put(Product product)
         {
             UOW.GetProductRepository.Create(product);
-            if (await UOW.SaveChanges())
+            if (await UOW.SaveChangesAsync())
                 return Ok(product);
             return BadRequest();
         }
@@ -52,7 +52,7 @@ namespace Products.API.Controllers
         public async Task<IActionResult> Post(Product product)
         {
             UOW.GetProductRepository.Update(product);
-            if (await UOW.SaveChanges())
+            if (await UOW.SaveChangesAsync())
                 return Ok(product);
             return BadRequest();
         }
@@ -61,7 +61,7 @@ namespace Products.API.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             UOW.GetProductRepository.Delete(id);
-            if (!await UOW.SaveChanges())
+            if (!await UOW.SaveChangesAsync())
                 return BadRequest();
             return Ok();
         }

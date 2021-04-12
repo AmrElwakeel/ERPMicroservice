@@ -22,7 +22,8 @@ namespace Orders.API
         {
 
             services.AddBLL(Configuration);
-            services.AddRabbit(Configuration);
+            //services.AddRabbit(Configuration);
+            //services.AddHostedService<>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                  options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

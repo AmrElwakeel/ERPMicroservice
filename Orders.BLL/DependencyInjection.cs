@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Orders.BLL.Broker;
+using Orders.BLL.Broker.Consumer;
 using Orders.DAL.UnitOfWork.Interfaces;
 
 namespace Orders.BLL
@@ -12,7 +14,14 @@ namespace Orders.BLL
             services.AddDbContext<ApplicationDbContext>(options =>
                  options.UseSqlServer(
                         configuration.GetConnectionString("DefaultConnection"),
-                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName))); 
+                        b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
+
+
+            //RabbitMQ............................
+            services.AddRabbit(configuration);
+            //services.AddHostedService<ConsumerRabbitManager>();
+            //............................................
+
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
