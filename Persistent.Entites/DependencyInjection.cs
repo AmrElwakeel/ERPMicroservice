@@ -22,17 +22,12 @@ namespace Persistence.Entites
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            //services.AddScoped<IProductRepository, ProductRepository>();
-
+            //services.AddScoped<IProductRepository, ProductRepository>(); 
 
             var rabbitConfig = configuration.GetSection("rabbit");
             services.Configure<RabbitOptions>(rabbitConfig);
 
             services.AddHostedService<ConsumerRabbitManager>();
-
-
-
-            
         }
     }
 }

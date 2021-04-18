@@ -39,8 +39,8 @@ namespace Products.API.Controllers
             return Ok(product);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Put(Product product)
+        [HttpPost]
+        public async Task<IActionResult> Post(Product product)
         {
             UOW.GetProductRepository.Create(product);
             if (await UOW.SaveChangesAsync())
@@ -48,8 +48,8 @@ namespace Products.API.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post(Product product)
+        [HttpPut]
+        public async Task<IActionResult> Put(Product product)
         {
             UOW.GetProductRepository.Update(product);
             if (await UOW.SaveChangesAsync())

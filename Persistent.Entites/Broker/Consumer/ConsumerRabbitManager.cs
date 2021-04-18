@@ -4,15 +4,10 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Persistence.Entites;
 using Products.Application.Interfaces.IRepositories;
-using Products.Application.Interfaces.IUnitOfWork;
 using Products.Persistence.Entites.Broker.Models;
 using Products.Persistence.Entites.Repositories;
-using Products.Persistence.Entites.UOW;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,14 +19,12 @@ namespace Products.Persistence.Entites.Broker
         private IConnection _connection;
         private IModel _channel;
         private readonly RabbitOptions _options;
-        private readonly ApplicationDbContext context;
 
-        public ConsumerRabbitManager(ILoggerFactory loggerFactory, IOptions<RabbitOptions> optionsAccs, ApplicationDbContext context)
+        public ConsumerRabbitManager(ILoggerFactory loggerFactory, IOptions<RabbitOptions> optionsAccs)
         {
             _options = optionsAccs.Value;
             this._logger = loggerFactory.CreateLogger<ConsumerRabbitManager>();
-            InitRabbitMQ();
-            this.context = context;
+            InitRabbitMQ(); 
         }
 
         private void InitRabbitMQ()
@@ -51,8 +44,8 @@ namespace Products.Persistence.Entites.Broker
             // create channel  
             _channel = _connection.CreateModel();
 
-            _channel.ExchangeDeclare("amq.topic", ExchangeType.Topic,true,false);
-            _channel.QueueDeclare("ERPOrderingQueue", false, false, false, null);
+            _channel.ExchangeDeclare("amq.topic", ExchangeType.Topic, true, false);
+            _channel.QueueDeclare("ERPOrderingQueue", true, false, false, null);
             _channel.QueueBind("ERPOrderingQueue", "amq.topic", "ERPOrderingQueue", null);
             _channel.BasicQos(0, 1, false);
 
@@ -87,16 +80,15 @@ namespace Products.Persistence.Entites.Broker
         {
             // we just print this message   
             //_logger.LogInformation($"consumer received {content}");
-             
-            var MsgObj = JsonConvert.DeserializeObject<OrderProductMsgModel>(content); 
 
-            IProductRepository repository = new ProductRepository(context);
+            var MsgObj = JsonConvert.DeserializeObject<OrderProductMsgModel[]>(content);
 
-            if(MsgObj.AddedOrder)
-                repository.DecreaseAmount(MsgObj.ProductId,MsgObj.Amount); 
-            else
-                repository.IncreaseAmount(MsgObj.ProductId, MsgObj.Amount);
-             
+            //IProductRepository repository = new ProductRepository(context);
+
+            //if (MsgObj.AddedOrder)
+            //    repository.DecreaseAmount(MsgObj.ProductId, MsgObj.Amount);
+            //else
+            //    repository.IncreaseAmount(MsgObj.ProductId, MsgObj.Amount);
         }
 
         private void OnConsumerConsumerCancelled(object sender, ConsumerEventArgs e) { }

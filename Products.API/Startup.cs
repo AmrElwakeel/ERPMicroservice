@@ -16,6 +16,10 @@ using Plain.RabbitMQ;
 using RabbitMQ.Client;
 using Products.API.Subscriber;
 using Subscriberr = Plain.RabbitMQ.Subscriber;
+using Products.Persistence.Services;
+using Products.Application.Interfaces.IServiceResponse;
+using Products.API.MiddleWare;
+
 namespace Products.API
 {
     public class Startup
@@ -31,6 +35,8 @@ namespace Products.API
         {
             services.AddPersistenceEntites(Configuration);
 
+            services.AddPersistenceServices(Configuration);
+
             services.AddSingleton<IConnectionProvider>(new ConnectionProvider("amqp://guest:guest@localhost:5672"));
 
             services.AddScoped<ISubscriber>(x => new Subscriberr(x.GetService<IConnectionProvider>()
@@ -38,13 +44,13 @@ namespace Products.API
 
             //services.AddHostedService<ProductDataCollector>();
 
-
-            services.AddControllers().AddNewtonsoftJson(options =>
-                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Products.API", Version = "v1" });
             });
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
          
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,6 +67,8 @@ namespace Products.API
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorMiddleWare>();
 
             app.UseEndpoints(endpoints =>
             {
