@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Persistence.Entites;
 using Products.Application.Interfaces.IServiceResponse;
 using Products.Application.Interfaces.IServices;
 using Products.Domain.Models.Services;
@@ -15,7 +16,9 @@ namespace Products.Persistence.Services
     {
         public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-           
+
+            services.AddPersistenceEntites(configuration);
+
             services.AddSingleton<IResponse, Response>();
 
             services.AddScoped<IProductService, ProductService>();

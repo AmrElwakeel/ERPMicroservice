@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Persistent.Entites\Products.Persistence.Entites.csproj" />
     <ProjectReference Include="..\Products.Application\Products.Application.csproj" />
   </ItemGroup>
 

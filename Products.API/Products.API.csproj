@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Persistent.Entites\Products.Persistence.Entites.csproj" />
     <ProjectReference Include="..\Persistent.Services\Products.Persistence.Services.csproj" />
   </ItemGroup>
 

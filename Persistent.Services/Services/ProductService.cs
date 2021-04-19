@@ -3,6 +3,7 @@ using Products.Application.Interfaces.IServiceResponse;
 using Products.Application.Interfaces.IServices;
 using Products.Application.Interfaces.IUnitOfWork;
 using Products.Domain.Entites;
+using Products.Domain.Models.PaginationRequest;
 using Products.Domain.Models.Services;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace Products.Persistence.Services.Services
             this.response = response;
         }
 
-        public async Task<IResponse> AddProduct(CreateProductModel model)
+        public async Task<IResponse> Create(CreateProductModel model)
         {
             try
             {
@@ -50,7 +51,12 @@ namespace Products.Persistence.Services.Services
             return response;
         }
 
-        public IResponse DecreaseAmount(int Id, int Amount)
+        public Task<IPagingResponse> Get(PaginationReqModel paginationReq)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IResponse> Get(int id)
         {
             throw new NotImplementedException();
         }
@@ -66,11 +72,6 @@ namespace Products.Persistence.Services.Services
         }
 
         public Task<IResponse> GetQuantity(int Id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IResponse IncreaseAmount(int Id, int Amount)
         {
             throw new NotImplementedException();
         }
